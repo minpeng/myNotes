@@ -91,3 +91,47 @@ public class ExportExcelUtil {
 ```
 
 
+```
+//强制函数生效
+sheetOne.setForceFormulaRecalculation(true);
+```
+
+```
+//合并单元格
+private static void mergedRegion( XSSFSheet sheet ) {
+        for (int i = sheet.getNumMergedRegions() - 1; i >= 0; i--) {
+            CellRangeAddress region = sheet.getMergedRegion(i);
+            Row firstRow = sheet.getRow(region.getFirstRow());
+            Cell firstCellOfFirstRow = firstRow.getCell(region.getFirstColumn());
+            String value="";
+            if (firstCellOfFirstRow.getCellType() == Cell.CELL_TYPE_STRING) {
+                value = firstCellOfFirstRow.getStringCellValue();
+            }
+            sheet.removeMergedRegion(i);
+
+            for (Row row : sheet) {
+                for (Cell cell : row) {
+                    if (region.isInRange(cell.getRowIndex(), cell.getColumnIndex())) {
+                        cell.setCellType(Cell.CELL_TYPE_STRING);
+                        cell.setCellValue(value);
+                    }
+                }
+            }
+        }
+        
+    }
+```
+
+
+```
+//修改合并单元格的值
+
+//1.第2列固定，第一行到第三行合并
+//此时光标在第一行
+sheetOne.getRow( 1 ).getCell( 2 ).setCellValue( "" );
+
+//待验证...
+//2.第2行固定，第一列到第三列合并
+//此时光标在第三列
+sheetOne.getRow( 2 ).getCell( 3 ).setCellValue( "" );
+```

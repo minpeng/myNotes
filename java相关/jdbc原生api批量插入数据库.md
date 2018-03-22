@@ -21,6 +21,7 @@ public int[] batchInsertOrUpdate( final List<InsertEntity> InsertEntiyList ){
         public void setValues( PreparedStatement ps, int i ) throws SQLException {
                 InsertEntity insertEntity = InsertEntiyList.get( i );
                 ps.setString( 1, xxx);
+                ps.setTimestamp( 2, new java.sql.Timestamp( costDetail.getDate().getTime() ) );
                 //省略其他
             }
             @Override
