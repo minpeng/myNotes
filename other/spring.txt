@@ -1,0 +1,85 @@
+1.SpringMVC在启动的时遍历所有bean
+2.对标志@Controller和@RequestMapping注解的类中方法进行遍历,
+将类和方法上的@RequestMapping注解值进行合并
+3.将@RequestMapping注解的相关参数值(如value、method等)封装一个RequestMappingInfo
+4.将这个Controller实例,方法及方法参数信息(类型、注解等)封装到HandlerMethod中
+5.然后以RequestMappingInfo为key,HandlerMethod为value存到一个以Map为结构的handlerMethods中
+6.将@RequestMapping注解中的value(即请求路径)值取出，即url，然后以url为key，
+以RequestMappingInfo为value，存到一个以Map为结构的urlMap属性中。
+
+
+1.客户端发起请求,根据请求的URL到urlMap中查找，找到RequestMappingInfo
+2.根据RequestMappingInfo到handlerMethods中查找，找到对应的HandlerMethod,
+将HandlerMethod封装到HandlerExecutionChain
+3.遍历容器中所有HandlerAdapter实现类，找到支持这次请求的HandlerAdapte
+
+
+Spring Aop 实现原理:动态代理
+
+jdk动态代理和Cglib代理:
+1.jdk动态代理:基于类实现接口.Cglib:基于类
+2.jdk的核心是实现InvocationHandler接口，使用invoke()方法进行面向切面的处理，调用相应的通知
+3.cglib的核心是实现MethodInterceptor接口，使用intercept()方法进行面向切面的处理，调用相应的通知。
+
+
+Spring Bean的生命周期
+1.Spring IoC容器找到关于Bean的定义并实例化该Bean。  
+2.Spring IoC容器对Bean进行依赖注入。
+3.如果Bean实现了BeanNameAware接口，则将该Bean的id传给setBeanName方法。
+如果Bean实现了BeanFactoryAware接口，则将BeanFactory对象传给setBeanFactory方法。
+如果Bean实现了BeanPostProcessor接口，则调用其postProcessBeforeInitialization方法。
+如果Bean实现了InitializingBean接口，则调用其afterPropertySet方法。
+如果有和Bean关联的BeanPostProcessors对象，则这些对象的postProcessAfterInitialization方法被调用。
+当销毁Bean实例时，如果Bean实现了DisposableBean接口，则调用其destroy方法。
+
+线程池组成:
+1.线程池管理器(ThreadPool):用于创建并管理线程池，包括创建线程池，销毁线程池，添加新任务
+2.工作线程(PoolWorker):线程池中线程
+3.任务接口(Task):每个任务必须实现的接口,以供工作线程调度任务的执行。它主要规定了任务的入口，任务执行完后的收尾工作，任务的执行状态等；
+4.任务队列(taskQueue):用于存放没有处理的任务。提供一种缓冲机制
+
+
+为什么要使用线程池？
+1.创建和销毁线程开销大，可能需要上千个时钟周期，避免cpu花费不必要的时间在这上面
+2.减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。
+3.可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下
+
+
+常见的线程池
+1.newSingleThreadExecutor 单线程的线程池
+2.newFixedThreadPool 固定大小的线程池
+3.newCachedThreadPool 可缓存的线程池
+4.newScheduledThreadPool 大小无限的线程池
+
+
+```
+public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              long keepAliveTime,
+                              TimeUnit unit,
+                              BlockingQueue<Runnable> workQueue,
+                              ThreadFactory threadFactory,
+                              RejectedExecutionHandler handler) {
+        if (corePoolSize < 0 ||
+            maximumPoolSize <= 0 ||
+            maximumPoolSize < corePoolSize ||
+            keepAliveTime < 0)
+            throw new IllegalArgumentException();
+        if (workQueue == null || threadFactory == null || handler == null)
+            throw new NullPointerException();
+        this.corePoolSize = corePoolSize;
+        this.maximumPoolSize = maximumPoolSize;
+        this.workQueue = workQueue;
+        this.keepAliveTime = unit.toNanos(keepAliveTime);
+        this.threadFactory = threadFactory;
+        this.handler = handler;
+    }
+
+```
+ corePoolSize:核心线程池大小
+ maximumPoolSize:最大线程池大小
+ keepAliveTime:	线程池中超过corePoolSize数目的空闲线程最大存活时间
+ unit:keepAliveTime时间单位
+ workQueue:阻塞任务队列
+ threadFactory:新建线程工厂
+ RejectedExecutionHandler:当提交任务数超过maxmumPoolSize+workQueue之和时，任务会交给RejectedExecutionHandler来处理
