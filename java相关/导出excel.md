@@ -135,3 +135,9 @@ sheetOne.getRow( 1 ).getCell( 2 ).setCellValue( "" );
 //此时光标在第三列
 sheetOne.getRow( 2 ).getCell( 3 ).setCellValue( "" );
 ```
+
+```
+//这个就是合并单元格  
+//参数说明：1：开始行 2：结束行  3：开始列 4：结束列  
+sheet.addMergedRegion(new CellRangeAddress(2,14,0,0));  
+```
