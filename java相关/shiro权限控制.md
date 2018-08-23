@@ -63,6 +63,7 @@
     
     <!-- Shiro's main business-tier object for web-enabled applications -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--缓存配置-->
         <property name="cacheManager" ref="shiroCacheManager" />
         <property name="sessionManager" ref="shiroSessionManager" />
         <property name="realms">
@@ -163,4 +164,142 @@ public class ShiroHttpRealm extends AuthorizingRealm {
 
 }
 
+```
+
+#### 4.filters
+```
+//继承AuthorizationFilter
+public class ProductAuthFilter extends AuthorizationFilter {
+
+
+    @Override
+    protected boolean isAccessAllowed( ServletRequest request, ServletResponse response, Object mappedValue ) throws Exception {
+
+        Subject subject = getSubject( request, response );
+        if( subject == null ) {
+            return false;
+        }
+
+        ShiroUser user = (ShiroUser)subject.getPrincipal();
+        long userId = user.id;
+
+        if( userId < 0L ) {
+            return false;
+        }
+        // 获取请求的产品
+        String productId = request.getParameter( "productId" );
+        if( StringUtils.isEmpty( productId ) ) {
+            return true;
+        }
+        //具体业务
+        return true;
+
+    }
+
+
+```
+
+#### 5.缓存配置
+
+- shiro 缓存
+```
+import org.apache.shiro.cache.AbstractCacheManager;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component( value = "shiroCacheManager" )
+public class ShiroCacheManager extends AbstractCacheManager{
+
+    @Autowired
+    private ShiroCache myCache;
+    
+    @Override
+    protected Cache createCache(String arg0) throws CacheException {
+        return myCache;
+    }
+
+}
+
+
+```
+
+- 存储于memcache
+```
+
+import java.util.Collection;
+import java.util.Set;
+
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import net.rubyeye.xmemcached.MemcachedClient;
+
+@Component
+public class ShiroCache implements Cache<Object, Object> {
+
+    public static final int HOUR_TIME_OUT = 60 * 60 * 1;
+
+    @Autowired
+    private MemcachedClient memcachedClient;
+    
+    public Object get( Object key ) throws CacheException {
+        if( key instanceof String ) {
+            try {
+                return this.memcachedClient.get( (String)key );
+            }
+            catch( Exception exception ) {
+                exception.printStackTrace();
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object put( Object key, Object value ) throws CacheException {
+        if( key instanceof String ) {
+            try {
+                this.memcachedClient.set( (String)key, HOUR_TIME_OUT, value );
+            }
+            catch( Exception e ) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return value;
+    }
+    
+    @Override
+    public Set<Object> keys() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Object remove(Object arg0) throws CacheException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int size() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public Collection<Object> values() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public void clear() throws CacheException {
+        // TODO Auto-generated method stub
+        
+    }
 ```
