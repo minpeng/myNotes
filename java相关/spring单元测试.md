@@ -60,6 +60,7 @@ public class SpringTestBase {
     </beans:bean>
     
     </beans:beans>
+
 ```
 
 ### 3.编写测试类-继承于基类
