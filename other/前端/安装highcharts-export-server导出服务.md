@@ -25,7 +25,7 @@ ln -s /home/resin/opt/node/8.4.0/node-v8.4.0-linux-x86/bin/npm /usr/local/bin/np
 
 ### 3.安装highcharts-export-server
 ```
-##没有安装git可以子啊本地下载之后上传
+##没有安装git可以本地下载之后上传
 git clone https://github.com/highcharts/node-export-server
 npm install
 npm link
