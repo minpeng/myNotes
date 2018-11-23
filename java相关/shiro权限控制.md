@@ -303,3 +303,22 @@ public class ShiroCache implements Cache<Object, Object> {
         
     }
 ```
+
+
+### springboot shiro拦截器
+
+``` 
+        Map<String, String> hashMap = new HashMap<>();
+        hashMap.put("/settlement/**", "permissionUrlFilter");
+        shiroFilter.setFilterChainDefinitionMap(hashMap);
+        //自定义拦截器
+        Map<String, Filter> filters=new HashMap<>();
+        filters.put("permissionUrlFilter",permissionUrlFilter());
+        shiroFilter.setFilters(filters);
+
+
+        @Bean
+        public PermissionUrlFilter permissionUrlFilter() {
+            return new PermissionUrlFilter();
+        }
+```
