@@ -109,3 +109,67 @@ public class CafeWebSocketHandler extends TextWebSocketHandler {
     } 
 }
 ```
+
+### 5.前端配置
+```
+
+getWebSocket = function () {
+    var webSocket = null;
+    var heartBeatMessage="HeartBeat";
+    if('WebSocket' in window){
+        if(window.location.protocol==="https:"){
+            webSocket = new WebSocket('wss://'+window.location.host+'/webSocket');
+        }else{
+            webSocket = new WebSocket('ws://'+window.location.host+'/webSocket');
+        }
+
+    }else{
+        console.log("该浏览器不支持WebSocket!!!");
+    }
+
+    webSocket.onopen = function (event) {
+        heartCheck.start();
+        console.log("建立连接");
+      
+
+    }
+
+    webSocket.onclose = function (event) {
+        console.log("断开连接");
+    }
+
+    webSocket.onmessage = function (event) {
+        heartCheck.reset();
+        if(event.data==''|| event.data==undefined ||
+            event.data==heartBeatMessage){
+            return;
+        }
+        //获取数据
+        var jsObject = JSON.parse(event.data);
+     
+    }
+
+    webSocket.onerror = function (event) {
+        console.log("websocket通信发生错误!!!");
+    }
+
+    window.onbeforeunload = function (event) {
+        webSocket.close();
+    }
+
+    //心跳检测
+    var heartCheck={
+        timeout: 58*1000,//58s
+        timeoutObj: null,
+        reset: function(){
+            clearTimeout(this.timeoutObj);
+            this.start();
+        },
+        start: function(){
+            this.timeoutObj = setTimeout(function(){
+                webSocket.send("HeartBeat");
+            }, this.timeout)
+        }
+    }
+};
+```
