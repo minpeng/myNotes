@@ -8,13 +8,20 @@
 Stirng jsonString=JSONObject.toJSONString(attendanceGroup);
 ```
 
-1. 字符串转实体类
+2. 字符串转实体类
 
 ```
 AttendanceGroup attendanceGroup = JSONObject.parseObject(jsonString,AttendanceClass.class);
 ```
 
+3.最小范围设定格式化方法
 
+```
+JSONObject.DEFFAULT_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";//设置日期格式
+
+String jsonStr=JSONObject.toJSONString(object, SerializerFeature.WriteDateUseDateFormat);
+
+```
 ### 自定义序列化方法
 
 ```
