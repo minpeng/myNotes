@@ -141,3 +141,65 @@ sheetOne.getRow( 2 ).getCell( 3 ).setCellValue( "" );
 //参数说明：1：开始行 2：结束行  3：开始列 4：结束列  
 sheet.addMergedRegion(new CellRangeAddress(2,14,0,0));  
 ```
+
+### 读取excel 图片
+```
+
+    public static void main(String[] args) throws Exception {
+        String filePath = "C://Users//pengm//Desktop//1111.xlsx";
+        XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(filePath));
+        List<Map<String, PictureData>> sheetList = new ArrayList<Map<String, PictureData>>();
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        Map<String, PictureData> sheetIndexPicMap = new HashMap<String, PictureData>();
+
+        for (POIXMLDocumentPart dr : sheet.getRelations()) {
+            if (dr instanceof XSSFDrawing) {
+                XSSFDrawing drawing = (XSSFDrawing) dr;
+                List<XSSFShape> shapes = drawing.getShapes();
+                for (XSSFShape shape : shapes) {
+                    XSSFPicture pic = (XSSFPicture) shape;
+                    XSSFClientAnchor anchor = pic.getPreferredSize();
+                    CTMarker ctMarker = anchor.getFrom();
+                    String picIndex = String.valueOf(0) + "_"
+                            + ctMarker.getRow() + "_" + ctMarker.getCol();
+//                    pic.getPictureData().getData();
+                    sheetIndexPicMap.put(picIndex, pic.getPictureData());
+                }
+            }
+        }
+        // 将当前sheet图片map存入list
+        sheetList.add(sheetIndexPicMap);
+        printImg(sheetList);
+        System.out.println(sheetIndexPicMap);
+    }
+
+    //将图片保存到指定位置
+    public static void printImg(List<Map<String, PictureData>> sheetList) throws Exception {
+
+        for (Map<String, PictureData> map : sheetList) {
+            Object key[] = map.keySet().toArray();
+            for (int i = 0; i < map.size(); i++) {
+                // 获取图片流
+                PictureData pic = map.get(key[i]);
+                // 获取图片索引
+                String picName = key[i].toString();
+                // 获取图片格式
+                String ext = pic.suggestFileExtension();
+
+                byte[] data = pic.getData();
+                  String filePath = "C://Users//pengm//Desktop//pic//img//" + picName + "." + ext;
+                File file = new File(filePath);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (!((file).exists())) {
+                    file.createNewFile();
+                }
+                FileOutputStream out = new FileOutputStream(filePath + picName + "." + ext);
+                out.write(data);
+                out.close();
+            }
+        }
+
+    }
+```

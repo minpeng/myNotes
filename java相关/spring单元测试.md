@@ -104,6 +104,7 @@ public class XXXXTest extends SpringTestBase {
 
 ### 测试文件下载
 > 主要就是增加 ResultHandler
+
 ```
 @Test
 public void testExport() {
@@ -136,4 +137,22 @@ public void testExport() {
     }
 
 }
+```
+
+### 测试文件上传
+```
+ private static final String api = "/api/common";
+
+    @Test
+    public void fileUpload() throws Exception {
+        String url = api + "/fileUpload";
+        String filePath = "D://abc.xlsx";
+        FileInputStream fis = new FileInputStream(filePath);
+        MockMultipartFile firstFile = new MockMultipartFile("file", filePath, "multipart/form-data", fis);
+        String result = mockMvc.perform(MockMvcRequestBuilders.multipart(url)
+                .file(firstFile))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 ```
