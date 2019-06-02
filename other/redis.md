@@ -17,6 +17,8 @@ auth 123456
 ## 远程连接
 redis-cli -h 127.0.0.1 -p 6379 -a password
 
+## 二进制查看
+ redis-cli  --raw
 ##查看key
 KEYS abc*
 
@@ -52,4 +54,11 @@ PUBLISH redisChat "Redis is a great caching technique"
 ```
 mvn install -Dmaven.test.skip=true
 mvn clean package  -Dmaven.test.skip=true
+```
+
+### linux命令
+
+```
+# 查看文件大小
+du -h --max-depth=1 data
 ```

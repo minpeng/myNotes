@@ -6,15 +6,32 @@
 
 ```
 Stirng jsonString=JSONObject.toJSONString(attendanceGroup);
+
+
 ```
 
-2. 字符串转实体类
+2.javabean 转换Map
+```
+//方法 一
+Map<String, Object> a = (Map<String, Object>)JSON.toJSON(javabean)
+
+//方法 二
+Map<String, Object> a = JSON.parseObject(JSON.toJSONString(javabean))
+
+
+```
+3. 字符串转实体类
 
 ```
 AttendanceGroup attendanceGroup = JSONObject.parseObject(jsonString,AttendanceClass.class);
 ```
 
-3.最小范围设定格式化方法
+4.字符串转List
+```
+List<AttendanceGroup> attendanceGroupList = JSONArray.parseArray(jsonString, AttendanceGroup.class);
+```
+
+5.最小范围设定格式化方法
 
 ```
 JSONObject.DEFFAULT_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";//设置日期格式

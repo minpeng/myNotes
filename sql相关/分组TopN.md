@@ -11,6 +11,13 @@ WHERE (
 ) <= 10;
 
 
+SELECT id, kw_type, keyword
+FROM tb_keyword
+WHERE (
+   SELECT COUNT(*) FROM tb_keyword AS f
+   WHERE f.kw_type = tb_keyword.kw_type AND f.update_time <= tb_keyword.update_time
+) <= 10;
+
 
 ```
 

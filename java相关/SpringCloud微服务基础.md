@@ -60,3 +60,25 @@ requestContext.setRequest(new HttpServletRequestWrapper(request) {
 
 });
 ```
+
+微服务公共模块打包
+```
+<build>
+    <plugins>
+        <!--打包jar-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </plugin>
+    </plugins>
+
+    </build>
+```
