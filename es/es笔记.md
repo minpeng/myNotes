@@ -74,3 +74,55 @@ time_out:是否超时
 /g*,u*/_search 以g或者u开头的索引搜索
 
 ```
+
+
+
+
+
+过滤掉特殊字符
+```
+title = QueryParser.escape(title);  // 主要就是这一句把特殊字符都转义,那么lucene就可以识别
+```
+
+```
+# 传递初始主机列表，以便在启动新节点时执行发现
+discovery.zen.ping.unicast.hosts: ["192.168.xxx.xxx:9300", "192.168.xxx.xxx:9300"]
+# 选举Maste时需要的节点数 (total number of master-eligible nodes / 2 + 1) 防止“防止脑裂”
+discovery.zen.minimum_master_nodes: 2
+
+```
+
+防止脑裂,至少需要三个节点
+```
+第一台机器
+1.data节点,只存储数据
+node.master: false 
+node.data: true 
+
+
+第二台机器
+2.master节点,不存储数据,参与选举,有可能成为主节点
+node.master: true 
+node.data: false 
+
+2.data节点不参与选举,只存储数据
+node.master: false 
+node.data: true 
+
+
+```
+
+第一台机器(12)
+1.master节点,不存储数据,参与选举,有可能成为主节点
+node.master: true 
+node.data: false 
+
+2.data节点不参与选举,只存储数据
+node.master: false 
+node.data: true 
+
+第二台机器(233)
+2.data节点不参与选举,只存储数据
+node.master: false 
+node.data: true 
+
