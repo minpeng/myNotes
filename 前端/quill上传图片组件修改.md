@@ -1,8 +1,6 @@
-## quill上传图片组件修改
+# quill富文本自定义上传组件
 
-> 富文本编辑器quill在上传图片的时候会转换为base64格式，直接插入到content，这样后端直接存图片而不是图片地址了，需要修改为存图片地址的方式
-
-> 在查看github之后发现可以增加一个自定义toolbar来解决
+> 富文本编辑器quill在上传图片的时候会转换为base64格式，这样后端直接存图片而不是图片地址了，需要修改为存图片地址的方式,在查看github之后发现可以增加一个自定义toolbar来解决
 
 
 1. 增加自定义的toolbar
@@ -76,4 +74,6 @@
 ```
 
 3. 参考资料
-> 
+> https://github.com/surmon-china/vue-quill-editor/issues/21
+> https://github.com/surmon-china/vue-quill-editor/blob/master/examples/03-example.vue#L34
+
