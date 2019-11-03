@@ -55,6 +55,85 @@ Remote：远程仓库
 + tag 对应某次 commit, 是一个点，是不可移动的（类似里程碑）
 + branch 对应一系列 commit，是很多点连成的一根线，有一个HEAD 指针，是可以依靠 HEAD 指针移动的
 
+```
+
+Git有commit，为什么还要引入tag？
+
+"请把上周一的那个版本打包发布，commit号是6a5819e…"
+
+"一串乱七八糟的数字不好找！"
+
+如果换一个办法：
+
+"请把上周一的那个版本打包发布，版本号是v1.2"
+
+"好的，按照tag v1.2查找commit就行！"
+
+所以，tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。
+
+
+```
+
+
+
+### 工作流程
+
+```
+1.对代码进行修改
+2.完成了某项功能，提交（commit，只是提交到本地代码库），1-2可以反复进行，直到觉得可以推送到服务器上时，执行3
+3.拉取（pull，或者用获取 fetch 然后再手动合并 merge）
+4.如果存在冲突，解决冲突
+5.推送（push），将数据提交到服务器上的代码库
+
+```
+
+
+### gitlab项目管理
+
+1. 创建项目组
+
+   ![创建项目组](../image/gitlab/create-group.png)
+
+   ```
+   私有库：只有被赋予权限的用户可见
+   内部库：登录用户可以下载
+   公开库：所有人可以下载
+   ```
+
+2.  添加项目组成员
+
+   ![添加项目组成员](../image/gitlab/add-members.png)
+
+3. 创建项目
+
+   ![创建项目](../image/gitlab/create-project.png)
+
+4. 添加项目成员
+
+   ![添加项目成员](../image/gitlab/add-project-members.png)
+
+    ```
+   
+    ```
+
+
+    ```
+
+
+
+3. 设置人员
+
+```
+Guest:
+Reporter:
+Developer:
+Master:
+Owner:
+
+```
+
+
+
 ### Eclipse使用git
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191027212350475.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTA3NDIwNDk=,size_16,color_FFFFFF,t_70)
 ### idea使用git
@@ -64,4 +143,4 @@ Remote：远程仓库
 > https://www.liaoxuefeng.com/wiki/896043488029600
 > 
 > https://www.bootcss.com/p/git-guide/
- 
+
