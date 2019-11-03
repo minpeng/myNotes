@@ -554,6 +554,87 @@ Hbase+phoenix
 reids队列遇到的问题
 rabbitMa遇到的问题
 
+
+tcc 2pc 3pc
+代理模式
+设计模式
+jvm
+垃圾回收
+无
+Volatile 修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。而且，当成员变量发生变化时，强迫线程将变化值回写到共享内存。
+这样在任何时刻，两个不同的线程总是看到某个成员变量的同一个值
+
+spring tomcat替换
+spring 初始化方法
+CommandLineRunner 
+实现了 CommandLineRunner 接口的 Component 会在所有 Spring Beans 初始化完成之后， 在 SpringApplication.run() 执行之前完成
+
+实现 ApplicationRunner 接口的
+ApplicationRunner 则是包含了 ApplicationArguments 对象，可以帮助获得更丰富的项目信息
+
+@PostConstruct
+
+InitializingBean
+
+
+init-method
+给bean配置init-method属性，或者在xml配置文件中指定，或者指定注解 Bean 的 initMethod 属性
+
+
+顺序：
+@PostConstruct->InitializingBean->init-method->ApplicationRunner->CommandLineRunner
+
+spring 配置文件bootstrap.yml和application.yml
+加载顺序：先加载bootstrap.yml再加载application.yml
+boostrap 由父 ApplicationContext 加载，比 applicaton 优先加载
+boostrap 里面的属性不能被覆盖
+
+for update 什么时候释放
+需要有事务，commit或者rollback释放
+隔离级别 
+读已提交
+读未提交
+可重复读
+串行
+造成数据库：脏读,不可重复读,幻读
+传播属性
+不可重复读和可重复读的区别
+
+线程池参数
+拒绝策略
+1:丢弃抛出异常AbortPolicy 
+2:丢弃不抛出异常DiscardPolicy 
+3:丢弃最旧的任务，加入队列DiscardOldestPolicy 
+4:交给线程池调用所在的线程进行处理CallerRunsPolicy 
+theadLocal
+
+mybatis常用标签：
+insert,select,update,foreach,if,trim,set,choose,when,otherwise
+mybaits预编译sql，把特殊字符转义
+
+
+留存率计算
+锁的分类
+静态类和springbean
+spring bean的类型
+线程池四种
+
+锁的分类
+公平锁/非公平锁
+可重入锁
+独享锁/共享锁
+互斥锁/读写锁
+乐观锁/悲观锁
+分段锁
+偏向锁/轻量级锁/重量级锁
+自旋锁
+
+
+java排查cpu过高
+1.top 查看pid
+2.ps -mp pid -o THREAD,tid,time 查看tid
+3.tid转换16进制printf "%x\n" pid
+4.jstack pid |grep 16进制pid -A 30
 ### 10.29 微众银行
 1.
 
