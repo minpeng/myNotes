@@ -549,8 +549,35 @@ jvm
 垃圾回收
 
 ### 10.26 涂鸦二面
-Hbase+phoenix
-付款消息弹框流程
+1. Hbase+phoenix
+
+2. 付款消息弹框流程
+
+   ```
+   付款消息实时弹框及语音提醒流程
+   CopyOnWriteArraySet:它是线程安全的无序的集合，可以将它理解成线程安全的HashSet
+   1.客户端和服务端建立webSocket长连接,服务端会对当前用户进行角色校验,同时把登陆用户CopyOnWriteArraySet<WebSocketSession>记录在内存中
+   2有用户付款,付款消息入redis队列,发送消息
+   2.1判断该弹框的用户是否在线
+   2.2判断当前是否已经正在弹框(redis key判断)
+   2.3从队列里面取出第一个元素,把redis是否可弹框置为false,发送消息
+   2.4在CopyOnWriteArraySet<WebSocketSession>找出符合接收人的用户，发送消息
+   3.客户端接收消息，弹框，调用获取语音接口，语音播报
+   3.1等用户关闭弹框或者10秒之后自动关闭，调用获取下一条收款信息接口
+   3.2继续走2.1步骤
+   
+   
+   多机器的时候CopyOnWriteArraySet<WebSocketSession>需要采用redis:pub/sub
+   1.两台机器同时订阅同一个topic
+   2.用户付款,发布消息，使订阅主题的都能收到
+   3.收到之后，走上面2.1
+   
+   
+   pub/sub的坏处就是sub端收不到订阅前发布的消息,sub端掉线之后也会丢失数据
+   ```
+
+   
+
 reids队列遇到的问题
 rabbitMa遇到的问题
 
@@ -629,12 +656,12 @@ spring bean的类型
 偏向锁/轻量级锁/重量级锁
 自旋锁
 
-
 java排查cpu过高
 1.top 查看pid
 2.ps -mp pid -o THREAD,tid,time 查看tid
 3.tid转换16进制printf "%x\n" pid
 4.jstack pid |grep 16进制pid -A 30
+
 ### 10.29 微众银行
 1.
 
