@@ -1,33 +1,35 @@
 ## git 使用指南
 
-### git 介绍
+[TOC]
+
+### 一、git 介绍
 
 > C 语言编写的一个分布式版本控制系统
 
-1. git 工作原理
+#### 1.git工作原理
 
 ![avatar](https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWcubXVrZXdhbmcuY29tLzU5YzMxZTQ0MDAwMTNiYzkxMTcyMDM0MC5wbmc?x-oss-process=image/format,png)
 
 ```
 
-Workspace：工作区
-Index / Stage：暂存区
-Repository：仓库区（或本地仓库）
-Remote：远程仓库
+1.Workspace：工作区:本地电脑存放项目文件的地方
+2.Index / Stage：暂存区:在使用git管理项目文件的时候，其本地的项目文件会多出一个.git的文件夹，将这个.git文件夹称之为版本库。其中.git文件夹中包含了两个部分，一个是暂存区（Index或者Stage）,顾名思义就是暂时存放文件的地方，通常使用add命令将工作区的文件添加到暂存区里
+3.Repository：仓库区（或本地仓库）:使用commit命令可以将暂存区中的文件添加到本地仓库中
+4.Remote：远程仓库:不是在本地仓库中，项目代码在远程git服务器上，比如项目放在github上，就是一个远程仓库，通常使用clone命令将远程仓库拷贝到本地仓库中，开发后推送到远程仓库中即可
 
 ```
 
-2.git 和 svn 区别
+#### 2.git 和 svn 区别
 
-- svn 集中式
+- svn 集中式(有单独的服务器)
 
 ![avatar](https://imgconvert.csdnimg.cn/aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL2ZpbGVzL2F0dGFjaG1lbnRzLzkxODkyMTU0MDM1NTg3Mi8w?x-oss-process=image/format,png)
 
-- git 分布式
+- git 分布式（每一台都可以存储）
 
 ![avatar](https://imgconvert.csdnimg.cn/aHR0cHM6Ly93d3cubGlhb3h1ZWZlbmcuY29tL2ZpbGVzL2F0dGFjaG1lbnRzLzkxODkyMTU2MjIzNjE2MC8w?x-oss-process=image/format,png)
 
-> 为什么说 git 是分布式的
+#### 3.为什么说 git 是分布式的
 
 ```
   这里的“分布式”是相对于“集中式”来说的。把数据集中保存在服务器节点，所有的客户节点都从服务节点获取数据的版本控制系统叫做集中式版本控制系统，比如svn就是典型的集中式版本控制系统。
@@ -38,7 +40,7 @@ Remote：远程仓库
 
 ```
 
-> git 和 svn 差异对比
+#### 4.git 和 svn 差异对比
 
 | 差异点   | svn                                                                                                                                                                                                                    | git                                                                                                                                                                                                                                                                                  |
 | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -51,8 +53,36 @@ Remote：远程仓库
 | 学习成本 | 使用起来更方便，svn 对中文支持好，操作简单，适用于大众                                                                                                                                                                 | 更在乎效率而不是易用性，成本较高（有很多独有的命令，rebase，远程仓库交互的命令，等等）                                                                                                                                                                                               |
 | 权限管理 | svn 的权限管理相当严格，可以按组、个人针对某个子目录的权限控制（每个目录下都会有个.svn 的隐藏文件）                                                                                                                    | git 没有严格的权限管理控制，只有账号角色划分                                                                                                                                                                                                                                         |
 
-### git 常用命令
+### 二、git安装
 
+> 下载地址<https://git-scm.com/downloads>
+
+#### 1.windows安装
+
+> 一路next下去就行
+
+![avatar](../image/git/gitClientInstall.png)
+
+> 验证git是否安装成功,在cmd下输入git
+
+![avatar](../image/git/gitCMd.png)
+
+#### 2.mac安装
+
+```
+在 Mac 上安装 Git 有多种方式。 
+最简单的方法是安装 Xcode Command Line Tools。 Mavericks （10.9） 或更高版本的系统中，在 Terminal 里尝试首次运行 git 命令即可。 如果没有安装过命令行开发者工具，将会提示你安装。
+
+如果你想安装更新的版本，可以使用二进制安装程序。 官方维护的 OSX Git 安装程序可以在 Git 官方网站下载，网址为 http://git-scm.com/download/mac
+```
+
+
+
+### 三、git 常用命令
+
+> git help可以看到全部命令
+
+```
 1. 初始化一个 git 仓库：git init
 2. 克隆仓库：git clone <url>
 3. 添加文件（提交到缓存区）：git add <file>
@@ -73,7 +103,9 @@ Remote：远程仓库
 18. 新建带备注的标签：git tag -a <tag_name> -m <tag_message>
 19. 给某个 commit 答标签：git tag -a <tag_name> <commit_id> -m <tag_message>
 
-### tag 和 branche 的区别
+```
+
+### 四、tag 和 branch 的区别
 
 - tag 对应某次 commit, 是一个点，是不可移动的（类似里程碑）
 
@@ -98,7 +130,9 @@ Remote：远程仓库
 
 ```
 
-### 工作流程
+### 五、工作流程
+
+![工作流程](../image/git/git-process.png)
 
 ```
 1.对代码进行修改
@@ -109,61 +143,77 @@ Remote：远程仓库
 
 ```
 
-### Eclipse 使用 git
+### 六、git客户端
+
+#### 1.GitHub for Desktop
+
+> github官方推荐<https://desktop.github.com/>
+
+![小乌龟](../image/git/gitDesktop.png)
+
+#### 2.TortoiseGit
+
+> 和svn的小乌龟类似
+
+![小乌龟](../image/git/gitTortoise.png)
+
+#### 3.Source Tree  
+
+> 号称是最好用的Git GUI工具,需要翻墙
+
+![sourceTree](../image/git/gitSourceTree.png)
+
+### 七、编辑器使用git
+
+#### 1.Eclipse使用git
 
 > 右键->team
 
-- commit
++ commit
 
   ![commit](https://minpeng.github.io//image/eclipse/commit.png)
-
   ![commit](https://minpeng.github.io//image/eclipse/commit-info.png)
 
-- push
-
-  ![commit](https://minpeng.github.io//image/eclipse/push.png)
-
-- pull
-
++ push
+  ![push](https://minpeng.github.io//image/eclipse/push.png)
++ pull
   ![pull](https://minpeng.github.io//image/eclipse/pull.png)
-
-- 分支
-
++ branch
   ![branch](https://minpeng.github.io//image/eclipse/branch.png)
++ merage
+   ![merage](https://minpeng.github.io//image/eclipse/merage.png)
 
-- 合并
+#### 2.idea使用git
 
-  ![merage](https://minpeng.github.io//image/eclipse/merage.png)
-
-### idea 使用 git
-
-- commit
++ commit
 
   ![commit](https://minpeng.github.io//image/idea/commit.png)
 
   ![commit](https://minpeng.github.io//image/idea/commit-info.png)
 
-- push/pull
++ push/pull
 
   ![commit](https://minpeng.github.io//image/idea/pull-push.png)
 
   ![commit](https://minpeng.github.io//image/idea/pull-push2.png)
 
-- 分支
++ branch
 
   ![branch1](https://minpeng.github.io//image/idea/branch1.png)
 
   ![branch1](https://minpeng.github.io//image/idea/branch2.png)
 
-- 合并分支
++ merage
 
   ![branch1](https://minpeng.github.io//image/idea/branchMerge.png)
 
-- 解决冲突
++ 冲突
 
-  ![branch1](https://minpeng.github.io//image/idea/conflict.png)
+  ![conflict](https://minpeng.github.io//image/idea/conflict.png)
 
-### gitlab 项目管理
+
+
+### 八、gitlab 项目管理
 
 1. 创建项目组
 
@@ -187,7 +237,7 @@ Remote：远程仓库
 
    ![添加项目成员](https://minpeng.github.io//image/gitlab/add-project-members.png)
 
-5) **设置人员**
+5. 设置人员
 
 > 人员权限
 
@@ -202,10 +252,21 @@ Owner(所属者):可以设置项目访问权限 - Visibility Level、删除项�
 
 > 具体可看 https://docs.gitlab.com/ee/user/permissions.html
 
-### 参考文档
+### 九、参考文档
 
 > https://www.liaoxuefeng.com/wiki/896043488029600
 >
 > https://juejin.im/entry/5b1faf61f265da6e5b7635b6
 >
 > https://www.bootcss.com/p/git-guide/
+>
+> <https://blog.csdn.net/xiaoguanyusb/article/details/79611647>
+>
+> https://git-scm.com/book/zh/v2
+
+
+
+
+
+
+
