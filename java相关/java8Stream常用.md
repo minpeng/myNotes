@@ -35,7 +35,7 @@ System.out.println(collect2);
 
 //7.list转map(要唯一)
 Map<String, MyInfo> myInfoMap = myInfoList.stream().collect(
-        Collectors.toMap(item -> String.valueOf(item.getAge()),
+        Collectors.toMap(item -> String.valueOf(item.getName()),
                 item -> item));
 
 
